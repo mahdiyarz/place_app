@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../widgets/image_input_widget.dart';
@@ -11,6 +13,11 @@ class AddPlaceScreen extends StatefulWidget {
 
 class _AddPlaceScreenState extends State<AddPlaceScreen> {
   final _titleController = TextEditingController();
+  late final _pickedImage;
+
+  void _selectImage(File pickImage) {
+    return pickImage = _pickedImage;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +39,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                       controller: _titleController,
                     ),
                     SizedBox(height: 10),
-                    ImageInputWidget(),
+                    ImageInputWidget(_selectImage),
                   ],
                 ),
               ),
