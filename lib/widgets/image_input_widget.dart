@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as pathFile;
+import 'package:path_provider/path_provider.dart' as syspaths;
 
 class ImageInputWidget extends StatefulWidget {
   @override
@@ -17,6 +19,12 @@ class _ImageInputWidgetState extends State<ImageInputWidget> {
       source: ImageSource.camera,
       imageQuality: 20,
     );
+    setState(() {
+      _storedImage = File(imageFile!.path);
+    });
+    final appDir = await syspaths.getApplicationDocumentsDirectory();
+    final fileName = pathFile.basename(imageFile!.path);
+    final saveImage = await imageFile.saveTo('${appDir.path}/$fileName');
   }
 
   @override
@@ -36,7 +44,10 @@ class _ImageInputWidgetState extends State<ImageInputWidget> {
             height: 150,
             alignment: Alignment.center,
             child: _storedImage != null
-                ? Image.file(_storedImage as File)
+                ? Image.file(
+                    _storedImage as File,
+                    fit: BoxFit.cover,
+                  )
                 : Text(
                     'Image not taken yet',
                     style: TextStyle(
