@@ -22,4 +22,9 @@ class DBHelper {
       conflictAlgorithm: sqflite.ConflictAlgorithm.replace,
     );
   }
+
+  static Future<List<Map<String, dynamic>>> getData(String table) async {
+    final db = await DBHelper.database();
+    return db.query(table);
+  }
 }
