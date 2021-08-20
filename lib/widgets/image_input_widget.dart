@@ -18,16 +18,24 @@ class _ImageInputWidgetState extends State<ImageInputWidget> {
 
   Future<void> _takeImage() async {
     final picker = ImagePicker();
-    final imageFile = await picker.pickImage(
+    final XFile? imageFile = await picker.pickImage(
       source: ImageSource.camera,
       imageQuality: 20,
-    );
-    setState(() {
-      _storedImage = File(imageFile!.path);
-    });
+    ) as XFile;
+
+    if (imageFile == null) {
+      return;
+    }
+
     final appDir = await syspaths.getApplicationDocumentsDirectory();
-    final fileName = pathFile.basename(imageFile!.path);
-    final saveImage = await imageFile.saveTo('${appDir.path}/$fileName');
+    final appDirPath = appDir.path;
+    final fileName = pathFile.basename(imageFile.path);
+
+    setState(() {
+      _storedImage = File(imageFile.path);
+    });
+
+    final saveImage = await File(imageFile.path).copy('$appDirPath/$fileName');
     widget.onSelectedImage(saveImage);
   }
 
@@ -51,6 +59,8 @@ class _ImageInputWidgetState extends State<ImageInputWidget> {
                 ? Image.file(
                     _storedImage as File,
                     fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: 150,
                   )
                 : Text(
                     'Image not taken yet',
