@@ -18,7 +18,7 @@ class GreatePlacesProvider with ChangeNotifier {
       location: null,
       image: pickImage,
     );
-    items.add(newPlace);
+    _items.add(newPlace);
     notifyListeners();
   }
 }
