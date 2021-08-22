@@ -28,6 +28,10 @@
 	<string>Need to take picture using Camera</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Need to take picture using microphone</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>the app is using location service while in the background</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>the app is using location service while in the backgroun</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
