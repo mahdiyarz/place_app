@@ -23,6 +23,7 @@ class _LocationInputWidgetState extends State<LocationInputWidget> {
     setState(() {
       _previewImageUrl = staticMapImage;
     });
+    print(staticMapImage);
   }
 
   Future<void> _selectOnMap() async {
@@ -47,7 +48,7 @@ class _LocationInputWidgetState extends State<LocationInputWidget> {
           decoration: BoxDecoration(
               border: Border.all(width: 1, color: Colors.black54)),
           width: double.infinity,
-          height: 150,
+          height: 225,
           margin: EdgeInsets.only(top: 10),
           alignment: Alignment.center,
           child: _previewImageUrl == null
