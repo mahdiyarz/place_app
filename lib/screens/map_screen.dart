@@ -22,16 +22,39 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  latLng.LatLng? _pickLocation;
+
+  void _selectLocation(latLng.LatLng position) {
+    setState(() {
+      _pickLocation = position;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Chose From Map'),
+        actions: [
+          if (widget.isSelected)
+            IconButton(
+              onPressed: _pickLocation == null
+                  ? null
+                  : () {
+                      Navigator.of(context).pop(_pickLocation);
+                    },
+              icon: Icon(Icons.check),
+            )
+        ],
       ),
       body: FlutterMap(
         options: MapOptions(
-          center: latLng.LatLng(51.5, -0.09),
+          center: latLng.LatLng(
+            widget.initialLocation.latitude as double,
+            widget.initialLocation.longitude as double,
+          ),
           zoom: 13.0,
+          onTap: widget.isSelected ? _selectLocation : null,
         ),
         layers: [
           TileLayerOptions(
@@ -43,18 +66,24 @@ class _MapScreenState extends State<MapScreen> {
               'id': 'mapbox.mapbox-streets-v8',
             },
           ),
-          // MarkerLayerOptions(
-          //   markers: [
-          //     Marker(
-          //       width: 80.0,
-          //       height: 80.0,
-          //       point: latLng.LatLng(51.5, -0.09),
-          //       builder: (ctx) => Container(
-          //         child: FlutterLogo(),
-          //       ),
-          //     ),
-          //   ],
-          // ),
+          MarkerLayerOptions(
+            markers: _pickLocation == null
+                ? []
+                : [
+                    Marker(
+                      width: 80.0,
+                      height: 80.0,
+                      point: _pickLocation as latLng.LatLng,
+                      builder: (ctx) => Container(
+                        child: Icon(
+                          Icons.location_pin,
+                          size: 50.0,
+                          color: Colors.red.shade600,
+                        ),
+                      ),
+                    ),
+                  ],
+          ),
         ],
       ),
       // GoogleMap(

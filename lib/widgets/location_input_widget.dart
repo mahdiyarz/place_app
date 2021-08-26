@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:latlong2/latlong.dart' as latLng;
 
 import '../helpers/location_helper.dart';
 import '../screens/map_screen.dart';
@@ -26,7 +27,7 @@ class _LocationInputWidgetState extends State<LocationInputWidget> {
   }
 
   Future<void> _selectOnMap() async {
-    final selectedLocation = await Navigator.of(context).push(
+    final latLng.LatLng? selectedLocation = await Navigator.of(context).push(
       MaterialPageRoute(
         fullscreenDialog: true,
         builder: (ctx) => MapScreen(
@@ -37,6 +38,7 @@ class _LocationInputWidgetState extends State<LocationInputWidget> {
     if (selectedLocation == null) {
       return;
     }
+    print(selectedLocation.latitude);
   }
 
   @override
