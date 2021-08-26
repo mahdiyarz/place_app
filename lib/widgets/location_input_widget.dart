@@ -23,7 +23,6 @@ class _LocationInputWidgetState extends State<LocationInputWidget> {
     setState(() {
       _previewImageUrl = staticMapImage;
     });
-    print(staticMapImage);
   }
 
   Future<void> _selectOnMap() async {
