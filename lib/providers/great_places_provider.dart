@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../models/place_model.dart';
 import '../helpers/db_helpers.dart';
+import '../helpers/location_helper.dart';
 
 class GreatePlacesProvider with ChangeNotifier {
   List<PlaceModel> _items = [];
@@ -12,11 +13,18 @@ class GreatePlacesProvider with ChangeNotifier {
     return [..._items];
   }
 
-  void addPlaces(String pickTitle, File pickImage) {
+  Future<void> addPlaces(
+      String pickTitle, File pickImage, PlaceLocation? pickedLocation) async {
+    final address = await LocationHelper.getAddress(
+        pickedLocation!.latitude as double, pickedLocation.longitude as double);
+    final updatePlaceLocation = PlaceLocation(
+        latitude: pickedLocation.latitude,
+        longitude: pickedLocation.longitude,
+        address: address);
     final newPlace = PlaceModel(
       id: DateTime.now().toString(),
       title: pickTitle,
-      location: null,
+      location: updatePlaceLocation,
       image: pickImage,
     );
     _items.add(newPlace);
@@ -25,6 +33,9 @@ class GreatePlacesProvider with ChangeNotifier {
       'id': newPlace.id,
       'title': newPlace.title,
       'image': newPlace.image.path,
+      'latitude': newPlace.location!.latitude as double,
+      'longitude': newPlace.location!.longitude as double,
+      'address': newPlace.location!.address as String,
     });
   }
 
@@ -35,7 +46,11 @@ class GreatePlacesProvider with ChangeNotifier {
           (e) => PlaceModel(
             id: e['id'],
             title: e['title'],
-            location: null,
+            location: PlaceLocation(
+              latitude: e['latitude'],
+              longitude: e['longitude'],
+              address: e['address'],
+            ),
             image: File(e['image']),
           ),
         )
