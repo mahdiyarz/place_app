@@ -53,7 +53,7 @@ class _MapScreenState extends State<MapScreen> {
             widget.initialLocation.latitude as double,
             widget.initialLocation.longitude as double,
           ),
-          zoom: 13.0,
+          zoom: 15.0,
           onTap: widget.isSelected ? _selectLocation : null,
         ),
         layers: [
@@ -67,13 +67,18 @@ class _MapScreenState extends State<MapScreen> {
             },
           ),
           MarkerLayerOptions(
-            markers: _pickLocation == null
+            markers: (_pickLocation == null && widget.isSelected)
                 ? []
                 : [
                     Marker(
-                      width: 80.0,
-                      height: 80.0,
-                      point: _pickLocation as latLng.LatLng,
+                      width: 50.0,
+                      height: 50.0,
+                      point: _pickLocation == null
+                          ? latLng.LatLng(
+                              widget.initialLocation.latitude as double,
+                              widget.initialLocation.longitude as double,
+                            )
+                          : _pickLocation as latLng.LatLng,
                       builder: (ctx) => Container(
                         child: Icon(
                           Icons.location_pin,
