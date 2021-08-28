@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:latlong2/latlong.dart' as latLng;
 
 import '../helpers/location_helper.dart';
 import '../screens/map_screen.dart';
 
 class LocationInputWidget extends StatefulWidget {
-  LocationInputWidget({Key? key}) : super(key: key);
+  final Function selectedAddress;
+  LocationInputWidget(this.selectedAddress);
 
   @override
   _LocationInputWidgetState createState() => _LocationInputWidgetState();
@@ -14,19 +16,26 @@ class LocationInputWidget extends StatefulWidget {
 class _LocationInputWidgetState extends State<LocationInputWidget> {
   String? _previewImageUrl;
 
-  Future<void> _getCurrentUserLocation() async {
-    final locData = await Location().getLocation();
+  void _previewImage(double lat, double lng) {
     final staticMapImage = LocationHelper.generateLocationPreviewImage(
-        latitude: locData.latitude as double,
-        longitude: locData.longitude as double);
+        latitude: lat, longitude: lng);
 
     setState(() {
       _previewImageUrl = staticMapImage;
     });
   }
 
+  Future<void> _getCurrentUserLocation() async {
+    final locData = await Location().getLocation();
+    widget.selectedAddress(locData.latitude, locData.longitude);
+    _previewImage(
+      locData.latitude as double,
+      locData.longitude as double,
+    );
+  }
+
   Future<void> _selectOnMap() async {
-    final selectedLocation = await Navigator.of(context).push(
+    final latLng.LatLng? selectedLocation = await Navigator.of(context).push(
       MaterialPageRoute(
         fullscreenDialog: true,
         builder: (ctx) => MapScreen(
@@ -37,6 +46,10 @@ class _LocationInputWidgetState extends State<LocationInputWidget> {
     if (selectedLocation == null) {
       return;
     }
+    widget.selectedAddress(
+        selectedLocation.latitude, selectedLocation.longitude);
+    _previewImage(selectedLocation.latitude, selectedLocation.longitude);
+    // print(selectedLocation.latitude);
   }
 
   @override
@@ -47,7 +60,7 @@ class _LocationInputWidgetState extends State<LocationInputWidget> {
           decoration: BoxDecoration(
               border: Border.all(width: 1, color: Colors.black54)),
           width: double.infinity,
-          height: 150,
+          height: 225,
           margin: EdgeInsets.only(top: 10),
           alignment: Alignment.center,
           child: _previewImageUrl == null
@@ -68,7 +81,7 @@ class _LocationInputWidgetState extends State<LocationInputWidget> {
               label: Text('Choose from Map'),
             ),
           ],
-        )
+        ),
       ],
     );
   }
