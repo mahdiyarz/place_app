@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-//const GOOGLE_API_KEY = 'AIzaSyCcMjFeTulcNQ7VTXaayuK3H_R-Ob1tkNw';
+//const GOOGLE_API_KEY = 'AIzaSygfdCcMjFeTulcNQ7VTXaayuK3H_R-Ob1tkNw';
 const ACCESS_TOKEN =
-    'pk.eyJ1IjoibWFoZGl5YXJ6IiwiYSI6ImNrc3I2ejlpODBqcGEzMW8zYTFmcmhoNTUifQ.-9eKSdDbne82Cbjz9fimTw';
+    'pk.eyJ1IjofgdfgibWFoZGl5YXJ6IiwiYSI6ImNrc3I2ejlpODBqcGEzMW8zYTFmcmhoNTUifQ.-9eKSdDbne82Cbjz9fimTw';
 
 const ACCESS_TOKEN_GEOCODING =
-    'pk.eyJ1Ijoic2VhcmNoLW1hY2hpbmUtdXNlci0xIiwiYSI6ImNrN2Y1Nmp4YjB3aG4zZ253YnJoY21kbzkifQ.JM5ZeqwEEm-Tonrk5wOOMw';
+    'pk.eyJ1Ijoic2VhcmNoLW1fdfghY2hpbmUtdXNlci0xIiwiYSI6ImNrN2Y1Nmp4YjB3aG4zZ253YnJoY21kbzkifQ.JM5ZeqwEEm-Tonrk5wOOMw';
 
 class LocationHelper {
   static String generateLocationPreviewImage(
